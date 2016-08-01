@@ -1,0 +1,6 @@
+{
+  "extends": "rsnara",
+  "rules": {
+    "immutable/no-mutation": 0
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "name": "glisp",
+  "version": "0.1.0",
+  "description": "A simple lisp interpreter in JS.",
+  "main": "lib/index.js",
+  "author": "Ramanpreet Nara",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "build": "rollup -c",
+    "prepublish": "npm run build",
+    "commit": "git cz",
+    "test": "cross-env NODE_ENV=test nyc ava",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test:watch": "npm test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsnara/glisp.git"
+  },
+  "keywords": [
+    "G",
+    "LISP",
+    "Interpreter"
+  ],
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90,
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "check-coverage": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "lib/**/*.js",
+      "**/*.test.js"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/rsnara/glisp/issues"
+  },
+  "homepage": "https://github.com/rsnara/glisp#readme",
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "babel-cli": "^6.11.4",
+    "babel-plugin-istanbul": "^1.0.3",
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.11.6",
+    "commitizen": "^2.8.2",
+    "coveralls": "^2.11.12",
+    "cross-env": "^2.0.0",
+    "cz-conventional-changelog": "^1.1.6",
+    "eslint": "^3.2.2",
+    "eslint-config-rsnara": "^1.1.0",
+    "nyc": "^7.1.0",
+    "rollup": "^0.34.3",
+    "rollup-plugin-babel": "^2.6.1"
+  },
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "mathjs": "^3.3.0",
+    "ramda": "^0.21.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}

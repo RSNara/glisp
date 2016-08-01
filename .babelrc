@@ -1,0 +1,8 @@
+{
+  "presets": ["es2015-rollup", "stage-0"],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
+}

@@ -1,6 +1,13 @@
 # GLISP - The G LISP Interpreter
 
-This is a LISP interpreter, with built-in support for arbitrary precision arithmetic, and immutable data structures. To see it live, visit the [Heroku deployment](https://glisp.herokuapp.com/). For the time being, use `window.run` to compile and execute forms.
+This is a LISP interpreter, with built-in support for arbitrary precision arithmetic, and immutable data structures.
+
+## Usage
+```JavaScript
+const { run } = require('glisp');
+
+run('(+ 1 2)') // 3
+```
 
 ## Language Features
 ```LISP
@@ -62,6 +69,3 @@ For the time being all numbers are instances of [BigNumber](https://github.com/M
 ;; Fractions
 (+ 1/3 2/3) ;; 1
 ```
-
-## Development
-Clone the repository and run `npm run dev`. Open the browser and navigate to `http://localhost:8080`. In the console, use `window.run` to compile and execute forms.

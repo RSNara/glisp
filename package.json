@@ -9,6 +9,7 @@
     "clean": "rimraf lib",
     "prebuild": "npm run clean",
     "build": "rollup -c",
+    "build:watch": "npm run build -- --watch",
     "prepublish": "npm run build",
     "commit": "git cz",
     "test": "cross-env NODE_ENV=test nyc ava",
@@ -72,7 +73,8 @@
     "eslint-config-rsnara": "^1.1.0",
     "nyc": "^7.1.0",
     "rollup": "^0.34.3",
-    "rollup-plugin-babel": "^2.6.1"
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-watch": "^2.5.0"
   },
   "dependencies": {
     "immutable": "^3.8.1",

@@ -69,3 +69,10 @@ For the time being all numbers are instances of [BigNumber](https://github.com/M
 ;; Fractions
 (+ 1/3 2/3) ;; 1
 ```
+
+## Development
+For convenience, there's a REPL. It doesn't refresh on file changes though.
+
+```BASH
+> npm run repl
+```

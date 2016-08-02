@@ -71,8 +71,11 @@ For the time being all numbers are instances of [BigNumber](https://github.com/M
 ```
 
 ## Development
-For convenience, there's a REPL. It doesn't refresh on file changes though.
 
 ```BASH
+# Launch REPL
 > npm run repl
+
+# Rebuild on file changes
+> npm run build:watch
 ```

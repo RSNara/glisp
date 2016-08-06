@@ -15,31 +15,46 @@ export default function destructure(env, key, form) {
 
   if (I.List.isList(key)) {
     if (! iterall.isCollection(evaluatedValue)) {
-      throw new Error(
+      throw Util.error(
         'Expected binding to support an iteration protocol, but got ' + evaluatedValue
       );
     }
 
-    if (key.last() === Symbol.for('&')) {
-      throw new Error('Unexpected \'&\' as last item in binding name.');
-    }
-
-    if (key.size >= 2 && key.get(key.size - 2) === Symbol.for('&')) {
-      const argNames = key.slice(0, key.size - 2);
+    if (isVariadic(key)) {
+      const argNames = key.butLast().butLast();
       const restName = key.last();
 
-      if (argNames.contains(Symbol.for('&'))) {
-        throw new Error('Detected two \'&\' in destructuring assignment LHS');
-      }
-
-      const [ argValues, restValue ] = Util.splitAtNth(key.size - 2, evaluatedValue);
+      const evaluatedValueSeq = I.Seq(evaluatedValue);
+      const argValues = evaluatedValueSeq.slice(0, argNames.size);
+      const restValue = evaluatedValueSeq.slice(argNames.size);
 
       return {
-        ...destructure(env, restName, I.Stack.of(Symbol.for('quote'), restValue)),
         ...destructureIterables(env, argNames, argValues),
+        ...destructure(env, restName, restValue),
       };
     }
+
+    return destructureIterables(env, key, evaluatedValue);
   }
 
-  throw new Error(`Failed to destructure (${key}, ${evaluatedValue})`);
+  throw Util.error(`Failed to destructure (${key}, ${evaluatedValue})`);
+}
+
+function isVariadic(key) {
+  const iterable = I.List(key);
+  const variadicSymbol = Symbol.for('&');
+
+  if (iterable.size >= 1 && iterable.last() === variadicSymbol) {
+    throw Util.error('Unexpected \'&\' as last item in binding name.');
+  }
+
+  if (iterable.size >= 2 && iterable.get(iterable.size - 2) === variadicSymbol) {
+    if (iterable.butLast().butLast().contains(variadicSymbol)) {
+      throw Util.error('Detected two \'&\' in destructuring assignment LHS');
+    }
+
+    return true;
+  }
+
+  return false;
 }

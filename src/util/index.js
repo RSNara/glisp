@@ -88,9 +88,9 @@ export function splitAtNth(n, iterable) {
   return indexedReduce(
     (coll, current, i) => {
       if (i === n) {
-        return coll.push(I.List());
+        return coll.push(I.List.of(current));
       }
-      return coll.set(coll.size - 1, coll.push(current));
+      return coll.set(coll.size - 1, coll.last().push(current));
     },
     I.List.of(I.List()),
     iterable
@@ -117,3 +117,29 @@ export const reduce = R.curry((reducer, initial, collection) => {
   });
   return reduced;
 });
+
+export const conjunct = R.curry((fn, args) => {
+  const [first, ...rest] = args;
+  return reduce(
+    ([result, old], current) => [result && fn(old, current), current],
+    [true, first],
+    rest,
+  )[0];
+});
+
+export const disjunct = R.curry((fn, args) => {
+  const [first, ...rest] = args;
+  return reduce(
+    ([result, old], current) => [result || fn(old, current), current],
+    [false, first],
+    rest,
+  )[0];
+});
+
+export function toArray(collection) {
+  return reduce((array, element) => [...array, element], [], collection);
+}
+
+export function error(...message) {
+  return new Error(message.join(' '));
+}

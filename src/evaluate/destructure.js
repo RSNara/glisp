@@ -43,7 +43,3 @@ export default function destructure(env, key, form) {
 
   throw new Error(`Failed to destructure (${key}, ${evaluatedValue})`);
 }
-
-function isIterable(obj) {
-  return obj === null ? false : typeof obj[Symbol.iterator] === 'function';
-}

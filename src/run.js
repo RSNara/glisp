@@ -1,6 +1,6 @@
 import * as Util from './util/index';
 import parse from './parse';
-import evaluate from './evaluate';
+import evaluate from './evaluate/index';
 import RootEnv from './root-env';
 
 export default function run(code) {

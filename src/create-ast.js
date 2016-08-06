@@ -3,6 +3,9 @@ import createParenMap from './create-paren-map';
 import createAtom from './create-atom';
 import * as Util from './util/index';
 
+// Have () parse to a Stack
+// Have [] parse to a list
+
 export default function createAst(tokens) {
   const endingParen = createParenMap(tokens);
 
@@ -14,6 +17,10 @@ export default function createAst(tokens) {
     const end = endingParen[i];
 
     if (token === '(') {
+      return [ buildSeq(I.Stack(), i, end, i + 1).reverse(), end + 1 ];
+    }
+
+    if (token === '[') {
       return [ buildSeq(I.List(), i, end, i + 1), end + 1 ];
     }
 

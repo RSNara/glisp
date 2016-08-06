@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 main();
 
 function main() {
-  return read().then(evaluate).then(print).then(main);
+  return read().then(evaluate).then(print, printErrors).then(main);
 }
 
 function read() {
@@ -24,6 +24,10 @@ function evaluate(input) {
 
 function print(output) {
   console.log(chalk.gray('; ') + chalk.green(serialize(output)));
+}
+
+function printErrors(output) {
+  console.error(output);
 }
 
 function serialize(object) {

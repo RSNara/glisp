@@ -70,3 +70,13 @@ test('should turn whitespace into an empty array', (assert) => {
   const tokens = tokenize('\n\t   \t\n');
   assert.deepEqual(tokens, []);
 });
+
+test('should tokenize \'&\' charcters', (assert) => {
+  const tokens = tokenize('(&)');
+  assert.deepEqual(tokens, ['(', '&', ')']);
+});
+
+test('should tokenize \'&\' beside spaces', (assert) => {
+  const tokens = tokenize(' & ');
+  assert.deepEqual(tokens, ['&']);
+});

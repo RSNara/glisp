@@ -11,4 +11,5 @@ export default {
   [Symbol.for('=')]: (...args) => Util.conjunct((x, y) => I.is(x, y), args),
   [Symbol.for('<')]: (...args) => Util.conjunct((x, y) => M.smaller(x, y), args),
   [Symbol.for('>')]: (...args) => Util.conjunct((x, y) => M.larger(x, y), args),
+  [Symbol.for('reduce')]: Util.reduce,
 };

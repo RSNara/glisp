@@ -8,7 +8,7 @@ const evaluate = R.curry((env, form) => {
     return env[form];
   }
 
-  if (Util.canExecuteForm(form)) {
+  if (I.Stack.isStack(form) && form.size !== 0) {
     return executeForm(env, form);
   }
 

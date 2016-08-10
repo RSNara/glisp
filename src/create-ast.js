@@ -11,7 +11,7 @@ export default function createAst(tokens) {
 
   return build(0)[0];
 
-  // TODO: Reimplement so JavaScript can do tail call optimization
+  // TODO: Re-implement so JavaScript can do tail call optimization
   function build(i) {
     const token = tokens[i];
     const end = endingParen[i];

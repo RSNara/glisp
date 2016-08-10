@@ -11,7 +11,6 @@ export default function quote(env, args) {
   return unquote(env, item);
 }
 
-
 function unquote(env, form) {
   if (! I.Iterable.isIterable(form)) {
     return form;
@@ -22,7 +21,7 @@ function unquote(env, form) {
       throw new Error(`unquote expects 1 arg, but was called with ${form.size - 1} args`);
     }
 
-    const argToUnquote = form.rest().first();
+    const argToUnquote = form.get(1);
     return evaluate(env, argToUnquote);
   }
 

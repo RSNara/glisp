@@ -10,18 +10,20 @@ export default function fn(env, args) {
     );
   }
 
-  const [fnArgNames, ...body] = args;
+  const [argNames, ...body] = args;
 
-  if (! I.List.isList(fnArgNames)) {
+  if (! I.List.isList(argNames)) {
     throw Util.error(
-      'Expected function arguments to be a List, but got ' + fnArgNames
+      'Expected function arguments to be a List, but got ' + argNames
     );
   }
 
-  return (...fnArgs) => {
-    validateArguments(fnArgNames, I.List(fnArgs));
-    const fnEnvironment = Util.create(env, destructure(env, fnArgNames, fnArgs));
-    const result = evaluate(fnEnvironment, I.Stack.of(Symbol.for('do'), ...body));
+  return function func(...argValues) {
+    const actualArgs = I.List(argValues);
+    validateArguments(argNames, actualArgs);
+
+    const fnEnv = Util.create(env, destructure(argNames, actualArgs));
+    const result = evaluate(fnEnv, Util.executableForm('do', ...body));
     return result;
   };
 }

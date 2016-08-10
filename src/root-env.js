@@ -11,5 +11,12 @@ export default {
   [Symbol.for('=')]: (...args) => Util.conjunct((x, y) => I.is(x, y), args),
   [Symbol.for('<')]: (...args) => Util.conjunct((x, y) => M.smaller(x, y), args),
   [Symbol.for('>')]: (...args) => Util.conjunct((x, y) => M.larger(x, y), args),
-  [Symbol.for('reduce')]: Util.reduce,
+  [Symbol.for('List')]: (...args) => I.List.of(...args),
+  [Symbol.for('List?')]: (x) => I.List.isList(x),
+  [Symbol.for('Set')]: (...args) => I.Set.of(...args),
+  [Symbol.for('Set?')]: (x) => I.Set.isSet(x),
+  [Symbol.for('Stack')]: (...args) => I.Stack.of(...args),
+  [Symbol.for('Stack?')]: (x) => I.Stack.isStack(x),
+  [Symbol.for('Map')]: (...args) => I.Map.of(...args),
+  [Symbol.for('Map?')]: (x) => I.Map.isMap(x),
 };

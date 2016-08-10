@@ -143,3 +143,19 @@ export function toArray(collection) {
 export function error(...message) {
   return new Error(message.join(' '));
 }
+
+export const mergeKvp = R.curry((next, keys, values) => {
+  const kvPairs = R.zip(toArray(keys), toArray(values));
+  return R.reduce(merge, {}, kvPairs);
+
+  function merge(running, [k, v]) {
+    return {
+      ...running,
+      ...next(running, [k, v]),
+    };
+  }
+});
+
+export function executableForm(name, ...body) {
+  return I.Stack.of(Symbol.for(name), ...body);
+}

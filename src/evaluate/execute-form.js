@@ -37,10 +37,11 @@ export default function executeForm(env, form) {
 
   /** Procedure call */
   const [ fnForm, ...args ] = form;
+
   const fn = evaluate(env, fnForm);
 
   if (typeof fn !== 'function') {
-    throw new Error('Tried to call ' + fn + ' as a function.');
+    throw new Error('Tried to call ' + String(fn) + ' as a function.');
   }
 
   if (Util.isMacro(fn)) {

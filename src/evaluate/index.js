@@ -30,16 +30,17 @@ function evaluateColl(env, form) {
   return form;
 }
 
-const shouldMapEntries = or(
-  I.OrderedMap.isOrderedMap,
-  I.Map.isMap,
-);
-
 const shouldMap = or(
   I.List.isList,
   I.Set.isSet,
   I.OrderedSet.isOrderedSet,
   I.Seq.isSeq,
+  I.Stack.isStack,
+);
+
+const shouldMapEntries = or(
+  I.OrderedMap.isOrderedMap,
+  I.Map.isMap,
 );
 
 function or(...fns) {

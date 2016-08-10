@@ -1,8 +1,6 @@
-import * as I from 'immutable';
 import * as Util from '../../util/index';
-
-import destructureIterables from '../destructure-iterables';
 import evaluate from '../index';
+import destructure from '../destructure';
 
 export default function $let(env, args) {
   const [ bindings, ...body ] = args;
@@ -10,10 +8,22 @@ export default function $let(env, args) {
     throw new Error('let bindings should be of even length');
   }
 
-  const bindingNames = bindings.filter((_, i) => Util.isEven(i));
+  const bindingKeys = bindings.filter((_, i) => Util.isEven(i));
   const bindingValues = bindings.filter((_, i) => Util.isOdd(i));
 
-  const letBindingEnv = destructureIterables(env, bindingNames, bindingValues);
-  const letEnvironment = Util.create(env, letBindingEnv);
-  return evaluate(letEnvironment, I.Stack.of(Symbol.for('do'), ...body));
+  // console.log({ bindingKeys, bindingValues });
+
+  const bindingEnv = buildLetBindingEnv(env, bindingKeys, bindingValues);
+  const letEnvironment = Util.create(env, bindingEnv);
+  return evaluate(letEnvironment, Util.executableForm('do', ...body));
+}
+
+function buildLetBindingEnv(outerEnv, ...args) {
+  return Util.mergeKvp((env, [key, value]) => {
+    const innerEnv = Util.create(outerEnv, env);
+    const evaluatedValue = evaluate(innerEnv, value);
+
+    // console.log({ key, evaluatedValue });
+    return destructure(key, evaluatedValue);
+  }, ...args);
 }

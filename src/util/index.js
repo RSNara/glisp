@@ -84,31 +84,9 @@ export function isMacro(fn) {
   return fn.isMacro;
 }
 
-export function splitAtNth(n, iterable) {
-  return indexedReduce(
-    (coll, current, i) => {
-      if (i === n) {
-        return coll.push(I.List.of(current));
-      }
-      return coll.set(coll.size - 1, coll.last().push(current));
-    },
-    I.List.of(I.List()),
-    iterable
-  );
-}
-
 export function canExecuteForm(form) {
   return I.Stack.isStack(form);
 }
-
-export const indexedReduce = R.curry((reducer, initial, collection) => {
-  return reduce(([accumulator, i], current) => {
-    return [
-      reducer(accumulator, current, i),
-      i + 1,
-    ];
-  }, [ initial, 0 ], collection)[0];
-});
 
 export const reduce = R.curry((reducer, initial, collection) => {
   let reduced = initial;

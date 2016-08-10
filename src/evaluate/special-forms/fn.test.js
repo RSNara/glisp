@@ -50,8 +50,6 @@ test('should throw an error if variadic and called with fewer args than expected
   `));
 });
 
-test.todo('should treat its body as an implicit \'do\'');
-
 test('should return the result of the last form in its body', (assert) => {
   const result = run({}, `
     ((fn [] 1 2 3 4 5))

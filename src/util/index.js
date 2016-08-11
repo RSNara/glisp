@@ -1,4 +1,6 @@
+import * as R from 'ramda';
 import * as I from 'immutable';
+import * as iterall from 'iterall';
 
 export function isNumber(x) {
   return ! Number.isNaN(parseFloat(x)) && ! Number.isNaN(Number(x));
@@ -13,15 +15,16 @@ export function getMatchingStartingParens(x) {
   return {
     ')': ['('],
     '}': ['#{', '{'],
+    ']': ['['],
   }[x] || [];
 }
 
 export function isEndingParen(x) {
-  return ['}', ')'].includes(x);
+  return ['}', ')', ']'].includes(x);
 }
 
 export function isStartingParen(x) {
-  return ['#{', '{', '('].includes(x);
+  return ['#{', '{', '(', '['].includes(x);
 }
 
 export function serializeArray(x) {
@@ -52,7 +55,7 @@ export function conj(collection, item) {
   }
 
   if (I.Stack.isStack(collection)) {
-    return collection.shift(item);
+    return collection.push(item);
   }
 
   throw new Error('Collection is not an Immutable object');
@@ -79,4 +82,58 @@ export function transformFnToMacro(fn) {
 
 export function isMacro(fn) {
   return fn.isMacro;
+}
+
+export function canExecuteForm(form) {
+  return I.Stack.isStack(form);
+}
+
+export const reduce = R.curry((reducer, initial, collection) => {
+  let reduced = initial;
+  iterall.forEach(collection, (item) => {
+    reduced = reducer(reduced, item);
+  });
+  return reduced;
+});
+
+export const conjunct = R.curry((fn, args) => {
+  const [first, ...rest] = args;
+  return reduce(
+    ([result, old], current) => [result && fn(old, current), current],
+    [true, first],
+    rest,
+  )[0];
+});
+
+export const disjunct = R.curry((fn, args) => {
+  const [first, ...rest] = args;
+  return reduce(
+    ([result, old], current) => [result || fn(old, current), current],
+    [false, first],
+    rest,
+  )[0];
+});
+
+export function toArray(collection) {
+  return reduce((array, element) => [...array, element], [], collection);
+}
+
+export function error(...message) {
+  return new Error(message.join(' '));
+}
+
+export const mergeKvp = R.curry((next, keys, values) => {
+  const kvPairs = R.zip(toArray(keys), toArray(values));
+  return R.reduce(merge, {}, kvPairs);
+
+  function merge(running, [k, v]) {
+    return {
+      ...running,
+      ...next(running, [k, v]),
+    };
+  }
+});
+
+export function executableForm(name, ...body) {
+  return I.Stack.of(Symbol.for(name), ...body);
 }

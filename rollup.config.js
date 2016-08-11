@@ -16,10 +16,12 @@ export default {
     'immutable',
     'ramda',
     'mathjs',
+    'iterall',
   ],
   globals: {
     immutable: 'Immutable',
     ramda: 'R',
     mathjs: 'math',
+    iterall: 'iterall',
   },
 };

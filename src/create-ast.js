@@ -3,17 +3,24 @@ import createParenMap from './create-paren-map';
 import createAtom from './create-atom';
 import * as Util from './util/index';
 
+// Have () parse to a Stack
+// Have [] parse to a list
+
 export default function createAst(tokens) {
   const endingParen = createParenMap(tokens);
 
   return build(0)[0];
 
-  // TODO: Reimplement so JavaScript can do tail call optimization
+  // TODO: Re-implement so JavaScript can do tail call optimization
   function build(i) {
     const token = tokens[i];
     const end = endingParen[i];
 
     if (token === '(') {
+      return [ buildSeq(I.Stack(), i, end, i + 1).reverse(), end + 1 ];
+    }
+
+    if (token === '[') {
       return [ buildSeq(I.List(), i, end, i + 1), end + 1 ];
     }
 

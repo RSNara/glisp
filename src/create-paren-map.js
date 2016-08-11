@@ -23,7 +23,7 @@ export default function createParenMap(tokens) {
       stack.push({ index, paren: token });
     } else if (Util.isEndingParen(token)) {
       const endingParen = token;
-      const matchingStartingParens = getMatchingStartingParens(endingParen);
+      const matchingStartingParens = Util.getMatchingStartingParens(endingParen);
 
       if (stack.length === 0) {
         throw ErrorFactories.DetectedNoStartingParens(endingParen, matchingStartingParens);
@@ -44,13 +44,6 @@ export default function createParenMap(tokens) {
   }
 
   return map;
-}
-
-function getMatchingStartingParens(x) {
-  return {
-    ')': ['('],
-    '}': ['#{', '{'],
-  }[x] || [];
 }
 
 function serializeStack(stack) {

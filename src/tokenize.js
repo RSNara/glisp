@@ -1,5 +1,7 @@
 export default function tokenize(program) {
   return program
+    .replace(/\[/g, ' [ ')
+    .replace(/\]/g, ' ] ')
     .replace(/\(/g, ' ( ')
     .replace(/\)/g, ' ) ')
     .replace(/#{/g, ' #{ ')

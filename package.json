@@ -15,7 +15,6 @@
     "commit": "git cz",
     "repl": "node repl",
     "test": "cross-env NODE_ENV=test nyc ava",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:watch": "ava -w"
   },
   "repository": {
@@ -28,11 +27,13 @@
     "Interpreter"
   ],
   "ava": {
+    "babel": "inherit",
     "require": [
       "babel-register"
     ]
   },
   "nyc": {
+    "all": true,
     "lines": 90,
     "statements": 90,
     "functions": 90,
@@ -46,10 +47,6 @@
     "check-coverage": true,
     "include": [
       "src/**/*.js"
-    ],
-    "exclude": [
-      "lib/**/*.js",
-      "**/*.test.js"
     ]
   },
   "bugs": {
@@ -57,7 +54,7 @@
   },
   "homepage": "https://github.com/rsnara/glisp#readme",
   "devDependencies": {
-    "ava": "^0.15.2",
+    "ava": "^0.16.0",
     "babel-plugin-istanbul": "^1.0.3",
     "babel-preset-es2015-rollup": "^1.1.1",
     "babel-preset-stage-0": "^6.5.0",

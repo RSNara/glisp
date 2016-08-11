@@ -16,7 +16,7 @@
     "repl": "node repl",
     "test": "cross-env NODE_ENV=test nyc ava",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "ava -w"
   },
   "repository": {
     "type": "git",

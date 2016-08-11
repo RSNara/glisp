@@ -4,6 +4,7 @@ coverage/
 .nyc_output/
 *.org
 *.log
+.idea
 
 # Mac bullshit
 *.DS_Store

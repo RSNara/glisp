@@ -11,20 +11,20 @@ run('(+ 1 2)') // 3
 
 ## Language Features
 ```LISP
-;; Variables
+;; variables
 (def one 1)
 
-;; Functions
+;; functions
 (def id (fn (x) x))
 
-;; Let bindings
+;; let bindings
 (let (one 1 two 2)
   (+ one two)) ;; 3
 
-;; quoting
+;; quotes
 (quote (1 2)) ;; (1 2)
 
-;; unquoting
+;; unquotes
 (let (one 1) (quote (unquote one))) ;; 1
 
 ;; do
@@ -43,10 +43,13 @@ run('(+ 1 2)') // 3
 (defn double (x) (* x 2))
 (double 2) ;; 4
 
+;; destructuring iterables
+(let [[one two] [1 2]]
+  (+ one two)) ;; 3
 ```
 
 ## Data Structures
-GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its immutable data structures.
+GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its immutable data structures. GLISP recognizes `Immutable.Stack` as an executable form.
 
 ```LISP
 ;; Set
@@ -56,7 +59,10 @@ GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its
 {1 2 3 4}
 
 ;; List
-(quote (1 2 3 4))
+[1 2 3 4]
+
+;; Stack
+(quote (1 2 3))
 ```
 
 ## Numbers

@@ -1,5 +1,7 @@
+import * as Util from './util/index';
+
 export default function tokenize(program) {
-  return program
+  return Util.stripComments(program)
     .replace(/\[/g, ' [ ')
     .replace(/\]/g, ' ] ')
     .replace(/\(/g, ' ( ')

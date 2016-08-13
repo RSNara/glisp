@@ -80,3 +80,26 @@ test('should tokenize \'&\' beside spaces', (assert) => {
   const tokens = tokenize(' & ');
   assert.deepEqual(tokens, ['&']);
 });
+
+test('should strip comments from strings', (assert) => {
+  const tokens = tokenize(`
+    (+ 1 1) ;; 2
+  `);
+  assert.deepEqual(tokens, ['(', '+', '1', '1', ')']);
+});
+
+test('should tokenize a comment as an empty array', (assert) => {
+  const tokens = tokenize('; I am a comment!');
+  assert.deepEqual(tokens, []);
+});
+
+test('should strip comments in multiple lines', (assert) => {
+  const tokens = tokenize(`
+    ;; This is a comment!
+    ;; This is another comment!
+    + ;; This is the add function!
+    ;; This is the final comment!
+  `);
+
+  assert.deepEqual(tokens, ['+']);
+});

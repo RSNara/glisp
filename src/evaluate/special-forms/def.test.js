@@ -39,3 +39,12 @@ test('should allow variables to be redefined', (assert) => {
 
   assert.truthy(M.equal(environment[Symbol.for('age')].toString(), 22));
 });
+
+test('should return the value of the variable defined', (assert) => {
+  const enviornment = {};
+  const result = evaluate(enviornment, parse(`
+    (def equal =)
+  `));
+
+  assert.is(result, enviornment[Symbol.for('equal')]);
+});

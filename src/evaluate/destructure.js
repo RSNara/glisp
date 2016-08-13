@@ -5,7 +5,6 @@ import * as Util from '../util/index';
 const destructureIterables = Util.mergeKvp((env, [k, v]) => destructure(k, v));
 
 export default function destructure(bindingKey, bindingValue) {
-  // console.log(({ bindingKey, bindingValue }));
   if (typeof bindingKey === 'symbol') {
     return {
       [bindingKey]: bindingValue,

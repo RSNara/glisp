@@ -86,9 +86,8 @@ Within `let` bindings and `fn` declarations, destructure any collection that con
 (rest [1 2 3 4 5])  ;; [2 3 4 5]
 
 ;; works in let bindings
-(let [[x y] [1 2]
-      sum   (+ x y)]
-  sum) ;; 3
+(let [[x y] [1 2]]
+  (+ x y)) ;; 3
 
 ;; ooo... destructure any iterable
 (let [[x y] (quote (1 2))]

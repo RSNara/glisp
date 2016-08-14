@@ -3,9 +3,6 @@ import createParenMap from './create-paren-map';
 import createAtom from './create-atom';
 import * as Util from './util/index';
 
-// Have () parse to a Stack
-// Have [] parse to a list
-
 export default function createAst(tokens) {
   const endingParen = createParenMap(tokens);
 

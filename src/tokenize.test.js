@@ -103,3 +103,117 @@ test('should strip comments in multiple lines', (assert) => {
 
   assert.deepEqual(tokens, ['+']);
 });
+
+test('should not tokenize strings within comments', (assert) => {
+  const tokens = tokenize(`
+    ; "I'm a string!"
+  `);
+
+  assert.deepEqual(tokens, []);
+});
+
+test('should not tokenize Set literals within comments', (assert) => {
+  const tokens = tokenize(`
+    ; #{1 2}
+    ;; This is another comment!
+    ; #{1} #{2}
+    #{}
+  `);
+
+  assert.deepEqual(tokens, ['#{', '}']);
+});
+
+test('should not tokenize Map literals within comments', (assert) => {
+  const tokens = tokenize(`
+    ; {1 2 3 4 5 6}
+    ;; This is another comment!
+    ; {1} {2}
+    {}
+  `);
+
+  assert.deepEqual(tokens, ['{', '}']);
+});
+
+test('should not tokenize List literals within comments', (assert) => {
+  const tokens = tokenize(`
+    ; [1 2 3 4 5 6]
+    ;; This is another comment!
+    ; [1] [2]
+    [1 23 4]
+  `);
+
+  assert.deepEqual(tokens, ['[', '1', '23', '4', ']']);
+});
+
+test('should not tokenize Stack literals within comments', (assert) => {
+  const tokens = tokenize(`
+    ;; This is my super special comment
+    (One two three)  ;; This is another super special comment!
+    ;; (one two three four five six seven)
+  `);
+
+  assert.deepEqual(tokens, ['(', 'One', 'two', 'three', ')']);
+});
+
+test('should not tokenize comments within comments', (assert) => {
+  const tokens = tokenize(`
+    1 ;; 2 ;; 3 ;; 4
+  `);
+
+  assert.deepEqual(tokens, ['1']);
+});
+
+test('should tokenize single line strings', (assert) => {
+  const tokens = tokenize('"This is a string!"');
+  assert.deepEqual(tokens, ['"This is a string!"']);
+});
+
+test('should tokenize multiline strings correctly', (assert) => {
+  const tokens = tokenize(`
+    1 2
+    "Super special awesome
+    Multiline String" ;; 4 spaces
+  `);
+  assert.deepEqual(tokens, ['1', '2', '"Super special awesome\n    Multiline String"']);
+});
+
+test('should tokenize strings with escaped instances of "', (assert) => {
+  const tokens = tokenize('"I am a \\"frog\\", you fish."');
+  assert.deepEqual(tokens, ['"I am a "frog", you fish."']);
+});
+
+
+test('should not tokenize Map literals within strings', (assert) => {
+  const tokens = tokenize(`
+    "This is a map: {1 2}"
+  `);
+  assert.deepEqual(tokens, ['"This is a map: {1 2}"']);
+});
+
+test('should not tokenize Set literals within strings', (assert) => {
+  const tokens = tokenize(`
+    "This is a set: #{1 2}"
+  `);
+  assert.deepEqual(tokens, ['"This is a set: #{1 2}"']);
+});
+
+test('should not tokenize List literals within strings', (assert) => {
+  const tokens = tokenize(`
+    "This is a List: [[1 2] [2]]"
+  `);
+  assert.deepEqual(tokens, ['"This is a List: [[1 2] [2]]"']);
+});
+
+test('should not tokenize Stack literals within strings', (assert) => {
+  const tokens = tokenize(`
+    "This is an executable form: (+ 1 2 3)"
+  `);
+  assert.deepEqual(tokens, ['"This is an executable form: (+ 1 2 3)"']);
+});
+
+test('should not tokenize comments within strings', (assert) => {
+  const tokens = tokenize(`
+    "This is a comment within a string: ;; I'm a comment!"
+  `);
+  assert.deepEqual(tokens, ['"This is a comment within a string: ;; I\'m a comment!"']);
+});

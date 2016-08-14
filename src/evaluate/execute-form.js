@@ -35,6 +35,10 @@ export default function executeForm(env, form) {
     return SpecialForms.macro(env, form.rest());
   }
 
+  if (Util.isMethodCall(form)) {
+    return SpecialForms.method(env, form);
+  }
+
   /** Procedure call */
   const [ fnForm, ...args ] = form;
 

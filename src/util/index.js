@@ -85,7 +85,7 @@ export function isMacro(fn) {
 }
 
 export function canExecuteForm(form) {
-  return I.Stack.isStack(form);
+  return I.Stack.isStack(form) && form.size > 0;
 }
 
 export const reduce = R.curry((reducer, initial, collection) => {
@@ -131,4 +131,37 @@ export function executableForm(name, ...body) {
 
 export function zip(keys, values, factory) {
   return keys.map((key, i) => [ key, values[i] || factory() ]);
+}
+
+export function isGlobalRef(symbol) {
+  return String(symbol).startsWith('Symbol(js/');
+}
+
+export function isMethodCall(form) {
+  const fnName = form.first();
+  return typeof fnName === 'symbol' && String(fnName).startsWith('Symbol(.');
+}
+
+export function getGlobal() {
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+
+  if (typeof global !== 'undefined') {
+    return global;
+  }
+
+  throw new Error('Could not find global object.');
+}
+
+export function getSymbolName(symbol) {
+  return /Symbol\(([^)]*)\)/.exec(String(symbol))[1];
+}
+
+export function getMethodName(symbol) {
+  return getSymbolName(symbol).replace(/^\./, '');
+}
+
+export function getGlobalRefName(symbol) {
+  return getSymbolName(symbol).replace(/^js\//, '');
 }

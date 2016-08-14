@@ -142,6 +142,22 @@ test('should allow unquotes within Lists', (assert) => {
   assert.truthy(I.is(result, I.List.of(symbol('a'), bignumber(1))));
 });
 
+test('should throw if called with more than 1 arguments', (assert) => {
+  assert.throws(() => run({}, '(quote 1 2)'));
+});
+
+test('should throw if unquote is called with more than 1 argument', (assert) => {
+  assert.throws(() => run({}, '(quote (unquote 1 2))'));
+});
+
+test('should throw if quote is called with no arguments', (assert) => {
+  assert.throws(() => run({}, '(quote)'));
+});
+
+test('should not throw if unquote is called with no arguments', (assert) => {
+  assert.throws(() => run({}, '(quote (unquote))'));
+});
+
 function run(env, code) {
   return evaluate(env, parse(code));
 }

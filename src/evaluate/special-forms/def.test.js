@@ -40,11 +40,6 @@ test('should allow variables to be redefined', (assert) => {
   assert.truthy(M.equal(env[Symbol.for('age')].toString(), 22));
 });
 
-test('should throw an error if one tries to dereference an undefined symbol', (assert) => {
-  const enviornment = {};
-  assert.throws(() => run(enviornment, '='));
-});
-
 function run(env, code) {
   return evaluate(env, parse(code));
 }

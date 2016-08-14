@@ -10,22 +10,22 @@ run('(+ 1 2)') // 3
 ```
 
 ## Language Features
-```LISP
+```Clojure
 ;; variables
 (def one 1)
 
 ;; functions
-(def id (fn (x) x))
+(def id (fn [x] x))
 
 ;; let bindings
-(let (one 1 two 2)
+(let [one 1 two 2]
   (+ one two)) ;; 3
 
 ;; quotes
 (quote (1 2)) ;; (1 2)
 
 ;; unquotes
-(let (one 1) (quote (unquote one))) ;; 1
+(let [one 1] (quote (unquote one))) ;; 1
 
 ;; do
 (do
@@ -36,22 +36,18 @@ run('(+ 1 2)') // 3
 (if (= 1 1) true false) ;; true
 
 ;; macros
-(def defn (macro (name args body)
+(def defn (macro [name args body]
             (quote
               (def (unquote name) (fn (unquote args) (unquote body))))))
 
-(defn double (x) (* x 2))
+(defn double [x] (* x 2))
 (double 2) ;; 4
-
-;; destructuring iterables
-(let [[one two] [1 2]]
-  (+ one two)) ;; 3
 ```
 
-## Data Structures
+### Data Structures
 GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its immutable data structures. GLISP recognizes `Immutable.Stack` as an executable form.
 
-```LISP
+```Clojure
 ;; Set
 #{1 2 3 4 5}
 
@@ -65,10 +61,37 @@ GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its
 (quote (1 2 3))
 ```
 
-## Numbers
+### Destructuring
+
+Within `let` bindings and `fn` declarations, one can destructure any collection that conforms to an iteration protocol understood by [Iterall](https://github.com/leebyron/iterall).
+
+```Clojure
+;; Get all arguments
+(def create-seq [& args] args)
+(create-seq 1 2 3 4 5)  ;; [1 2 3 4 5]
+
+;; Get the first element
+(def first (fn [[x]] x))
+(first ["first!" #{}])  ;; "first!"
+
+;; Get everything but the first element
+(def rest (fn [[x & args]] args))
+(rest [1 2 3 4 5])  ;; [2 3 4 5]
+
+;; Works in let bindings
+(let [[x y] [1 2]
+      sum (+ x y)]
+  sum) ;; 3
+
+;; Ooo... destructure any iterable
+(let [[x y] (quote (1 2))]
+  [x y]) ;; [1 2]
+```
+
+### Numbers
 For the time being all numbers are either instances of [BigNumber](https://github.com/MikeMcl/bignumber.js/), or [Fraction](https://github.com/infusion/Fraction.js/). Support for floating point numbers will be added later on.
 
-```LISP
+```Clojure
 ;; BigNumbers!
 (+ 0.1 0.2) ;; 0.3
 
@@ -76,22 +99,36 @@ For the time being all numbers are either instances of [BigNumber](https://githu
 (+ 1/3 2/3) ;; 1
 ```
 
-## Strings
-Strings also implemented and can be created using double quotes.
+### Strings
+Strings exist and can be created using double quotes.
 
-```LISP
+```Clojure
 "Produce side effects!"
 "This is a multiline string!
   Yay!"
 "You can also \"quote\" within strings!")
 ```
 
+### JavaScript Interop
+Symbols prefixed with `js/` will evaluate to the respective property on the `global` object. Method calls can be made by prefixing the method name with a `.`.
+
+```Clojure
+;; use window.console or global.console
+(.log js/console 1 2 3 4 5)
+
+;; push to a List
+(.push [1 2 3] 10)
+```
+
 ## Development
 
 ```BASH
-# Launch REPL
-> npm run repl
+# Run tests
+> npm test
 
 # Rebuild on file changes
 > npm run build:watch
+
+# Launch REPL
+> npm run repl
 ```

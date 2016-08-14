@@ -1,3 +1,4 @@
+import * as M from 'mathjs';
 import test from 'ava';
 import { parse, evaluate } from '../../index';
 
@@ -44,4 +45,14 @@ test('should return undefined when called with an empty body', (assert) => {
   `));
 
   assert.is(result, undefined);
+});
+
+test('should allow user to specify intent via a string', (assert) => {
+  const result = evaluate({}, parse(`
+    (do
+      "This is for not performing side effects!"
+      3)
+  `));
+
+  assert.truthy(M.equal(result, 3));
 });

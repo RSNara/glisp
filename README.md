@@ -66,7 +66,7 @@ GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its
 ```
 
 ## Numbers
-For the time being all numbers are instances of [BigNumber](https://github.com/MikeMcl/bignumber.js/). There is support for fractional numbers. Support for floating point numbers will be added later on.
+For the time being all numbers are either instances of [BigNumber](https://github.com/MikeMcl/bignumber.js/), or [Fraction](https://github.com/infusion/Fraction.js/). Support for floating point numbers will be added later on.
 
 ```LISP
 ;; BigNumbers!
@@ -74,6 +74,16 @@ For the time being all numbers are instances of [BigNumber](https://github.com/M
 
 ;; Fractions
 (+ 1/3 2/3) ;; 1
+```
+
+## Strings
+Strings also implemented and can be created using double quotes.
+
+```LISP
+"Produce side effects!"
+"This is a multiline string!
+  Yay!"
+"You can also \"quote\" within strings!")
 ```
 
 ## Development

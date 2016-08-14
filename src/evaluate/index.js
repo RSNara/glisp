@@ -5,10 +5,10 @@ import executeForm from './execute-form';
 
 const evaluate = R.curry((env, form) => {
   if (typeof form === 'symbol') {
-    return env[form];
+    return getSymbolValue(env, form);
   }
 
-  if (I.Stack.isStack(form) && form.size !== 0) {
+  if (Util.canExecuteForm(form)) {
     return executeForm(env, form);
   }
 
@@ -28,6 +28,25 @@ function evaluateColl(env, form) {
   }
 
   return form;
+}
+
+function getSymbolValue(env, symbol) {
+  if (Util.isGlobalRef(symbol)) {
+    const Global = Util.getGlobal();
+    const propName = Util.getGlobalRefName(symbol);
+
+    if (! (propName in Global)) {
+      throw new Error('Could not locate ' + propName + ' on global object.');
+    }
+
+    return Global[propName];
+  }
+
+  if (! (symbol in env)) {
+    throw new Error('Trying to access ' + String(symbol) + ' but none found in scope.');
+  }
+
+  return env[symbol];
 }
 
 const shouldMap = or(

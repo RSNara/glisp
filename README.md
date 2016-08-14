@@ -78,7 +78,7 @@ Within `let` bindings and `fn` declarations, destructure any collection that con
 
 ```Clojure
 ;; get all args
-(def create-seq [& args] args)
+(def create-seq (fn [& args] args))
 (create-seq 1 2 3 4 5)  ;; [1 2 3 4 5]
 
 ;; get everything but the first element

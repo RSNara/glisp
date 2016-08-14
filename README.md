@@ -19,7 +19,7 @@ run('(+ 1 2)') // 3
 
 ;; let bindings
 (let [one 1 two 2]
-  (+ one two)) ;; 3
+  (+ one two))  ;; 3
 
 ;; quotes
 (quote (1 2)) ;; (1 2)
@@ -30,7 +30,7 @@ run('(+ 1 2)') // 3
 ;; do
 (do
   (+ 1 2)
-  (+ 3 4)) ;; 7
+  (+ 3 4))  ;; 7
 
 ;; conditionals
 (if (= 1 1) true false) ;; true
@@ -41,7 +41,7 @@ run('(+ 1 2)') // 3
               (def (unquote name) (fn (unquote args) (unquote body))))))
 
 (defn double [x] (* x 2))
-(double 2) ;; 4
+(double 2)  ;; 4
 ```
 
 ### Data Structures
@@ -61,29 +61,36 @@ GLISP uses [Immutable.js](https://facebook.github.io/immutable-js/) to power its
 (quote (1 2 3))
 ```
 
-### Destructuring
-
-Within `let` bindings and `fn` declarations, one can destructure any collection that conforms to an iteration protocol understood by [Iterall](https://github.com/leebyron/iterall).
+### JavaScript Interop
+Symbols prefixed with `js/` will evaluate to the respective property on the `global` object. Method calls can be made by prefixing the method name with a `.`.
 
 ```Clojure
-;; Get all arguments
+;; use window.console or global.console
+(.log js/console 1 2 3 4 5)
+
+;; push to a List
+(.push [1 2 3] 10)
+```
+
+### Destructuring
+
+Within `let` bindings and `fn` declarations, destructure any collection that conforms to an iteration protocol understood by [Iterall](https://github.com/leebyron/iterall).
+
+```Clojure
+;; get all args
 (def create-seq [& args] args)
 (create-seq 1 2 3 4 5)  ;; [1 2 3 4 5]
 
-;; Get the first element
-(def first (fn [[x]] x))
-(first ["first!" #{}])  ;; "first!"
-
-;; Get everything but the first element
+;; get everything but the first element
 (def rest (fn [[x & args]] args))
 (rest [1 2 3 4 5])  ;; [2 3 4 5]
 
-;; Works in let bindings
+;; works in let bindings
 (let [[x y] [1 2]
-      sum (+ x y)]
+      sum   (+ x y)]
   sum) ;; 3
 
-;; Ooo... destructure any iterable
+;; ooo... destructure any iterable
 (let [[x y] (quote (1 2))]
   [x y]) ;; [1 2]
 ```
@@ -107,17 +114,6 @@ Strings exist and can be created using double quotes.
 "This is a multiline string!
   Yay!"
 "You can also \"quote\" within strings!")
-```
-
-### JavaScript Interop
-Symbols prefixed with `js/` will evaluate to the respective property on the `global` object. Method calls can be made by prefixing the method name with a `.`.
-
-```Clojure
-;; use window.console or global.console
-(.log js/console 1 2 3 4 5)
-
-;; push to a List
-(.push [1 2 3] 10)
 ```
 
 ## Development

@@ -5,6 +5,10 @@ import executeForm from './execute-form';
 
 const evaluate = R.curry((env, form) => {
   if (typeof form === 'symbol') {
+    if (! (form in env)) {
+      throw new Error('Trying to access ' + String(form) + ' but none found in scope.');
+    }
+
     return env[form];
   }
 

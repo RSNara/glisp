@@ -114,7 +114,7 @@ export function error(...message) {
 }
 
 export const mergeKvp = R.curry((next, keys, values) => {
-  const kvPairs = R.zip(toArray(keys), toArray(values));
+  const kvPairs = zip(toArray(keys), toArray(values), () => void 0);
   return R.reduce(merge, {}, kvPairs);
 
   function merge(running, [k, v]) {
@@ -129,8 +129,6 @@ export function executableForm(name, ...body) {
   return I.Stack.of(Symbol.for(name), ...body);
 }
 
-export const stripComments = R.compose(
-  R.join(''),
-  R.map(R.replace(/;.*$/, '')),
-  R.split(/\n/g)
-);
+export function zip(keys, values, factory) {
+  return keys.map((key, i) => [ key, values[i] || factory() ]);
+}

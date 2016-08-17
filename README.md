@@ -70,6 +70,13 @@ Symbols prefixed with `js/` will evaluate to the respective property on the `glo
 
 ;; push to a List
 (.push [1 2 3] 10)
+
+;; set properties on objects
+(let [object (.toJS {})]
+  (aset object "name" "Ramanpreet Nara")
+  (aset object "age" 20)) ;; { name: "Ramanpreet Nara", age: 20 }
+
+(aget (.toJS {"age" 21}) "age") ;; 21
 ```
 
 ### Destructuring

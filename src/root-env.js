@@ -19,4 +19,7 @@ export default {
   [Symbol.for('Stack?')]: (x) => I.Stack.isStack(x),
   [Symbol.for('Map')]: (...args) => I.Map.of(...args),
   [Symbol.for('Map?')]: (x) => I.Map.isMap(x),
+  [Symbol.for('aset')]: (object, key, value) => { object[key] = value; return object; },
+  [Symbol.for('aget')]: (object, key) => object[key],
+  [Symbol.for('fromJS')]: I.fromJS,
 };

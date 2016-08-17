@@ -1,5 +1,8 @@
 {
   "extends": "rsnara",
+  "plugins": [
+    "ava"
+  ],
   "rules": {
     "immutable/no-mutation": 0,
     "immutable/no-let": 0

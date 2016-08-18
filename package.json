@@ -14,6 +14,9 @@
     "prepublish": "npm run build",
     "commit": "git cz",
     "repl": "node repl",
+    "prerelease": "npm test",
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags && npm publish",
     "test": "cross-env NODE_ENV=test nyc ava",
     "test:watch": "ava -w"
   },
@@ -71,6 +74,7 @@
     "rollup": "^0.34.3",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-watch": "^2.5.0",
+    "standard-version": "^2.4.0",
     "testdouble": "^1.6.0"
   },
   "dependencies": {

@@ -3,17 +3,22 @@
   "version": "0.2.1",
   "description": "A simple lisp interpreter in JS.",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "author": "Ramanpreet Nara",
   "license": "ISC",
   "scripts": {
-    "clean": "rimraf lib",
     "prebuild": "npm run clean",
     "build": "rollup -c",
     "build:watch": "npm run build -- --watch",
-    "serve:dev": "http-server -p 8080 .",
-    "prepublish": "npm run build",
+    "clean": "rimraf lib",
     "commit": "git cz",
+    "lint": "eslint '**/*.js' --ignore-path .gitignore",
+    "prepublish": "npm run build",
     "repl": "node repl",
+    "serve:dev": "http-server -p 8080 .",
+    "pretest": "npm run lint",
     "test": "cross-env NODE_ENV=test nyc ava",
     "test:watch": "ava -w"
   },
@@ -66,6 +71,7 @@
     "cz-conventional-changelog": "^1.1.6",
     "eslint": "^3.2.2",
     "eslint-config-rsnara": "^1.1.0",
+    "eslint-plugin-ava": "^3.0.0",
     "http-server": "^0.9.0",
     "nyc": "^7.1.0",
     "rollup": "^0.34.3",

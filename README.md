@@ -42,6 +42,9 @@ run('(+ 1 2)') // 3
 
 (defn double [x] (* x 2))
 (double 2)  ;; 4
+
+;; throw errors!
+(throw (js/Error "throw up!"))
 ```
 
 ### Data Structures

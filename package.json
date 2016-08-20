@@ -1,6 +1,6 @@
 {
   "name": "glisp",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A simple lisp interpreter in JS.",
   "main": "lib/index.js",
   "author": "Ramanpreet Nara",

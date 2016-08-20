@@ -130,7 +130,7 @@ export function executableForm(name, ...body) {
 }
 
 export function zip(keys, values, factory) {
-  return keys.map((key, i) => [ key, values[i] || factory() ]);
+  return keys.map((key, i) => [ key, i >= values.length ? factory() : values[i] ]);
 }
 
 export function isGlobalRef(symbol) {

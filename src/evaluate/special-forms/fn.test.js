@@ -159,6 +159,14 @@ test('should default elements to undefined if they cannot be destructured', (ass
   assert.truthy(I.is(result, expected));
 });
 
+test('should accept falsey arguments', (assert) => {
+  const result = run({}, `
+    ((fn [x] x) false)
+  `);
+
+  assert.is(result, false);
+});
+
 function run(env, code) {
   return evaluate(env, parse(code));
 }

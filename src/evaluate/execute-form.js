@@ -27,6 +27,10 @@ export default function executeForm(env, form) {
     return SpecialForms.quote(env, form.rest());
   }
 
+  if (form.first() === Symbol.for('throw')) {
+    return SpecialForms.throw(env, form.rest());
+  }
+
   if (form.first() === Symbol.for('unquote')) {
     throw new Error('\'unquote\' call must be inside a \'quote\' call');
   }

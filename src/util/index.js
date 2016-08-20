@@ -105,6 +105,15 @@ export const conjunct = R.curry((fn, args) => {
   )[0];
 });
 
+export const disjunct = R.curry((fn, args) => {
+  const [first, ...rest] = args;
+  return reduce(
+    ([result, old], current) => [result || fn(old, current), current],
+    [false, first],
+    rest,
+  )[0];
+});
+
 export function toArray(collection) {
   return reduce((array, element) => [...array, element], [], collection);
 }

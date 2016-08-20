@@ -1,17 +1,17 @@
 import test from 'ava';
 import tokenize from './tokenize';
 
-test('should tokenize empty lists', (assert) => {
+test('should tokenize empty Stacks', (assert) => {
   const tokens = tokenize('()');
   assert.deepEqual(tokens, ['(', ')']);
 });
 
-test('should tokenize lists with numbers', (assert) => {
+test('should tokenize Stacks with numbers', (assert) => {
   const tokens = tokenize('(1 2 3)');
   assert.deepEqual(tokens, ['(', '1', '2', '3', ')']);
 });
 
-test('should tokenize nested lists', (assert) => {
+test('should tokenize nested Stacks', (assert) => {
   const tokens = tokenize('((1 (1 2)) 4)');
   assert.deepEqual(tokens, ['(', '(', '1', '(', '1', '2', ')', ')', '4', ')']);
 });
@@ -21,7 +21,7 @@ test('should tokenize map literals', (assert) => {
   assert.deepEqual(tokens, ['{', '}']);
 });
 
-test('should tokenize nested maps and lists', (assert) => {
+test('should tokenize nested maps and Stacks', (assert) => {
   const tokens = tokenize('{(1 2) {}}');
   assert.deepEqual(tokens, ['{', '(', '1', '2', ')', '{', '}', '}']);
 });
@@ -216,4 +216,11 @@ test('should not tokenize comments within strings', (assert) => {
     "This is a comment within a string: ;; I'm a comment!"
   `);
   assert.deepEqual(tokens, ['"This is a comment within a string: ;; I\'m a comment!"']);
+});
+
+test('should tokenize List literals beside regular symbols', (assert) => {
+  const tokens = tokenize(`
+    (defn id[x]x)
+  `);
+  assert.deepEqual(tokens, ['(', 'defn', 'id', '[', 'x', ']', 'x', ')']);
 });

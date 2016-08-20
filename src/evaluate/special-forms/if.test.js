@@ -30,6 +30,22 @@ test('should return the evaluation of the antecedent if condition evaluates to f
   assert.is(result, 'antecedent');
 });
 
+test('should work if only the consequent is defined and the test evaluates to true', (assert) => {
+  const result = run(RootEnv, `
+    (if true "works!")
+  `);
+
+  assert.is(result, 'works!');
+});
+
+test('should work if only the consequent is defined and the test evaluates to false', (assert) => {
+  const result = run(RootEnv, `
+    (if false "works!")
+  `);
+
+  assert.is(result, undefined);
+});
+
 function run(env, code) {
   return evaluate(env, parse(code));
 }

@@ -79,6 +79,7 @@ Symbols prefixed with `js/` will evaluate to the respective property on the `glo
   (aset object "name" "Ramanpreet Nara")
   (aset object "age" 20)) ;; { name: "Ramanpreet Nara", age: 20 }
 
+;; get properties on objects
 (aget (.toJS {"age" 21}) "age") ;; 21
 ```
 
@@ -105,14 +106,24 @@ Within `let` bindings and `fn` declarations, destructure any collection that con
 ```
 
 ### Numbers
-For the time being all numbers are either instances of [BigNumber](https://github.com/MikeMcl/bignumber.js/), or [Fraction](https://github.com/infusion/Fraction.js/). Support for floating point numbers will be added later on.
+GLISP supports JavaScript's 64 bit floating point numbers, [BigNumber](https://github.com/MikeMcl/bignumber.js/)s, and [Fraction](https://github.com/infusion/Fraction.js/)s.
 
 ```Clojure
+;; Floating points!
+(+ 0.1 0.2) ;; 0.30000000000000004
+
 ;; BigNumbers!
-(+ 0.1 0.2) ;; 0.3
+(+ 0.1M 0.2M) ;; 0.3
 
 ;; Fractions
 (+ 1/3 2/3) ;; 1
+
+;; Compare different number types!
+(= 1/1 1 1M) ;; true
+
+;; Beware of floating point errors!
+(= (+ 0.1 0.2) 0.3M) ;; throws: Cannot convert a number with >15 significant digits to BigNumber!
+(= (+ 0.1 0.2) 3/10) ;; throws: Cannot convert a number with >15 significant digits to Fraction!
 ```
 
 ### Strings

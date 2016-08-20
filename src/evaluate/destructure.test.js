@@ -1,9 +1,6 @@
 import test from 'ava';
 import * as GLISP from '../index';
 import * as I from 'immutable';
-import * as M from 'mathjs';
-
-const bignumber = (x) => M.bignumber(x);
 
 test('should enable the implementation of rest', (assert) => {
   const rest = run({}, '(fn [[x & args]] args)');
@@ -23,7 +20,7 @@ test('should destructure elements from sets in the correct order', (assert) => {
       [1 2 3])
   `);
 
-  const expectedList = I.List.of(1, 2, 3).map(bignumber);
+  const expectedList = I.List.of(1, 2, 3);
   assert.truthy(I.is(list, expectedList));
 });
 

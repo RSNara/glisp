@@ -8,7 +8,7 @@ const ROOT_ENV = {
   [Symbol.for('*')]: (...args) => args.reduce((x, y) => M.multiply(x, y)),
   [Symbol.for('/')]: (...args) => args.reduce((x, y) => M.divide(x, y)),
   [Symbol.for('!')]: (x) => !x,
-  [Symbol.for('=')]: (...args) => Util.conjunct((x, y) => I.is(x, y), args),
+  [Symbol.for('=')]: (...args) => Util.conjunct((x, y) => Util.is(x, y), args),
   [Symbol.for('<')]: (...args) => Util.conjunct((x, y) => M.smaller(x, y), args),
   [Symbol.for('>')]: (...args) => Util.conjunct((x, y) => M.larger(x, y), args),
   [Symbol.for('and')]: (...args) => Util.conjunct((x, y) => x && y, args),

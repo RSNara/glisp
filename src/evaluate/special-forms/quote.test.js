@@ -1,10 +1,8 @@
 import test from 'ava';
 import * as I from 'immutable';
-import * as M from 'mathjs';
 import * as R from 'ramda';
 import { parse, evaluate, RootEnv } from '../../index';
 
-const bignumber = (x) => M.bignumber(x);
 const symbol = (x) => Symbol.for(x);
 
 test('should prevent symbol evaluation', (assert) => {
@@ -20,7 +18,7 @@ test('should prevent a Stack from being executed', (assert) => {
     (quote (1 2 3 4))
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Stack.of(1, 2, 3, 4))));
+  assert.truthy(I.is(result, I.Stack.of(1, 2, 3, 4)));
 });
 
 test('should prevent any elements inside a Stack from being evaluated', (assert) => {
@@ -61,7 +59,7 @@ test('should no execute any nested Stacks', (assert) => {
     (quote ((1 2) (a)))
   `);
 
-  const expected = I.Stack.of(I.Stack.of(bignumber(1), bignumber(2)), I.Stack.of(symbol('a')));
+  const expected = I.Stack.of(I.Stack.of(1, 2), I.Stack.of(symbol('a')));
   assert.truthy(I.is(result, expected));
 });
 
@@ -71,7 +69,7 @@ test('should allow for symbols to be unquoted', (assert) => {
       (quote (a (unquote a))))
   `);
 
-  assert.truthy(I.is(result, I.Stack.of(symbol('a'), bignumber(1))));
+  assert.truthy(I.is(result, I.Stack.of(symbol('a'), 1)));
 });
 
 test('should allow nested Stacks to be evaluated via unquote', (assert) => {
@@ -81,7 +79,7 @@ test('should allow nested Stacks to be evaluated via unquote', (assert) => {
       (quote (sum (unquote (+ a b)))))
   `);
 
-  assert.truthy(I.is(result, I.Stack.of(symbol('sum'), bignumber(3))));
+  assert.truthy(I.is(result, I.Stack.of(symbol('sum'), 3)));
 });
 
 test('should allow unquotes within quotes within unquotes within quotes', (assert) => {
@@ -96,7 +94,7 @@ test('should allow unquotes within quotes within unquotes within quotes', (asser
                   (unquote (+ a b)))))))))
   `);
 
-  const expected = I.Stack.of(symbol('answer'), I.Stack.of(symbol('sum'), bignumber(3)));
+  const expected = I.Stack.of(symbol('answer'), I.Stack.of(symbol('sum'), 3));
   assert.truthy(I.is(result, expected));
 });
 
@@ -108,7 +106,7 @@ test('should allow unquotes within Map keys', (assert) => {
               (unquote b) b}))
   `);
 
-  const expected = I.Map.of(bignumber(1), symbol('a'), bignumber(2), symbol('b'));
+  const expected = I.Map.of(1, symbol('a'), 2, symbol('b'));
   assert.truthy(I.is(result, expected));
 });
 
@@ -120,7 +118,7 @@ test('should allow unquotes within Map values', (assert) => {
               b (unquote b)}))
   `);
 
-  const expected = I.Map.of(symbol('a'), bignumber(1), symbol('b'), bignumber(2));
+  const expected = I.Map.of(symbol('a'), 1, symbol('b'), 2);
   assert.truthy(I.is(result, expected));
 });
 
@@ -130,7 +128,7 @@ test('should allow unquotes within Sets', (assert) => {
       (quote #{a (unquote a)}))
   `);
 
-  assert.truthy(I.is(result, I.Set.of(symbol('a'), bignumber(1))));
+  assert.truthy(I.is(result, I.Set.of(symbol('a'), 1)));
 });
 
 test('should allow unquotes within Lists', (assert) => {
@@ -139,7 +137,7 @@ test('should allow unquotes within Lists', (assert) => {
       (quote [a (unquote a)]))
   `);
 
-  assert.truthy(I.is(result, I.List.of(symbol('a'), bignumber(1))));
+  assert.truthy(I.is(result, I.List.of(symbol('a'), 1)));
 });
 
 test('should throw if called with more than 1 arguments', (assert) => {

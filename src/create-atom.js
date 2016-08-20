@@ -10,21 +10,25 @@ export default function createAtom(x) {
     return false;
   }
 
-  if (Util.isFraction(x)) {
+  if (Util.isFractionString(x)) {
     return M.fraction(x);
   }
 
-  if (Util.isNumber(x)) {
-    return M.bignumber(x);
+  if (Util.isBignumberString(x)) {
+    return Util.createBignumber(x);
   }
 
-  if (isString(x)) {
-    return x.substring(1, x.length - 1);
+  if (Util.isNumberString(x)) {
+    return Number(x);
+  }
+
+  if (isActualString(x)) {
+    return Util.stripQuotes(x);
   }
 
   return Symbol.for(x);
 }
 
-function isString(string) {
+function isActualString(string) {
   return string.startsWith('"') && string.endsWith('"');
 }

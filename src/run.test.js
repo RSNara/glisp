@@ -1,5 +1,4 @@
 import test from 'ava';
-import * as M from 'mathjs';
 import run from './run';
 
 test('should allow setting properties on javascript objects', (assert) => {
@@ -9,7 +8,7 @@ test('should allow setting properties on javascript objects', (assert) => {
       (aset object "age" 20))
   `);
 
-  assert.deepEqual({ name: 'Ramanpreet Nara', age: M.bignumber(20) }, result );
+  assert.deepEqual({ name: 'Ramanpreet Nara', age: 20 }, result );
 });
 
 test('should allow getting properties from javascript objects', (assert) => {
@@ -17,5 +16,5 @@ test('should allow getting properties from javascript objects', (assert) => {
     (aget (.toJS {"age" 21}) "age")
   `);
 
-  assert.deepEqual(result, M.bignumber(21));
+  assert.deepEqual(result, 21);
 });

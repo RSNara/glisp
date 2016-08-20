@@ -80,6 +80,34 @@ test('Seq? should tell if an object is a Seq', (assert) => {
   assert.false(run(GLISP.RootEnv, '(Seq? "")'));
 });
 
+test('= should work for Fractions and Floating Point numbers', (assert) => {
+  assert.true(run(GLISP.RootEnv, '(= 1 1/1)'));
+});
+
+test('= should work for BigNumbers and Floating Point numbers', (assert) => {
+  assert.true(run(GLISP.RootEnv, '(= 1 1M)'));
+});
+
+test('= should work for Fractions and BigNumbers point numbers', (assert) => {
+  assert.true(run(GLISP.RootEnv, '(= 1/1 1M)'));
+});
+
+test('= should work for all GLISP numbers', (assert) => {
+  assert.true(run(GLISP.RootEnv, '(= 1/2 0.5M 0.5)'));
+});
+
+test('= should return false when any GLISP number is not the same', (assert) => {
+  assert.false(run(GLISP.RootEnv, '(= 1/2 0.5M 0.5 (+ 0.25 0.2))'));
+});
+
+test('= should throw on Floating Point errors when comparing Numbers with BigNumbers', (assert) => {
+  assert.throws(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 0.3M)'));
+});
+
+test('= should throw on Floating Point errors when comparing Numbers with Fractions', (assert) => {
+  assert.throws(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 3/10)'));
+});
+
 function run(env, code) {
   return GLISP.evaluate(env, GLISP.parse(code));
 }

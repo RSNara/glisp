@@ -1,10 +1,7 @@
 import test from 'ava';
 import * as I from 'immutable';
-import * as M from 'mathjs';
 import * as R from 'ramda';
 import { parse, evaluate } from '../../index';
-
-const bignumber = (x) => M.bignumber(x);
 
 test('should return a function', (assert) => {
   const result = run({}, `
@@ -55,7 +52,7 @@ test('should return the result of the last form in its body', (assert) => {
     ((fn [] 1 2 3 4 5))
   `);
 
-  assert.truthy(M.equal(result, 5));
+  assert.is(result, 5);
 });
 
 test('should return \'undefined\' if there are no forms in its body', (assert) => {
@@ -72,7 +69,7 @@ test('should support full argument destructuring', (assert) => {
     ((fn [& args] args) ${args.join(' ')})
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Seq(args))));
+  assert.truthy(I.is(result, I.Seq(args)));
 });
 
 test('should work with the identity function', (assert) => {
@@ -80,7 +77,7 @@ test('should work with the identity function', (assert) => {
     ((fn [x] x) 1)
   `);
 
-  assert.truthy(I.is(bignumber(1), result));
+  assert.truthy(I.is(1, result));
 });
 
 test('should support partial argument destructuring', (assert) => {
@@ -89,7 +86,7 @@ test('should support partial argument destructuring', (assert) => {
     ((fn [a b c & rest] rest) ${args.join(' ')})
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Seq(args.slice(3)))));
+  assert.truthy(I.is(result, I.Seq(args.slice(3))));
 });
 
 test('can construct a List from arguments provided', (assert) => {
@@ -97,7 +94,7 @@ test('can construct a List from arguments provided', (assert) => {
     ((fn [a b c] [a b c]) 1 2 3)
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.List.of(1, 2, 3))));
+  assert.truthy(I.is(result, I.List.of(1, 2, 3)));
 });
 
 test('can construct a Set from arguments provided', (assert) => {
@@ -105,7 +102,7 @@ test('can construct a Set from arguments provided', (assert) => {
     ((fn [a b c] #{a b c}) 1 2 3)
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Set.of(1, 2, 3))));
+  assert.truthy(I.is(result, I.Set.of(1, 2, 3)));
 });
 
 test('can construct a Stack from arguments provided', (assert) => {
@@ -113,7 +110,7 @@ test('can construct a Stack from arguments provided', (assert) => {
     ((fn [a b c] (quote ((unquote a) (unquote b) (unquote c)))) 1 2 3)
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Stack.of(1, 2, 3))));
+  assert.truthy(I.is(result, I.Stack.of(1, 2, 3)));
 });
 
 test('should treat rest as a destructuring form', (assert) => {
@@ -122,7 +119,7 @@ test('should treat rest as a destructuring form', (assert) => {
     ((fn [a & [b & [c & [d & [e & [f]]]]]] [a b c d e f]) ${args.join(' ')})
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.List(args))));
+  assert.truthy(I.is(result, I.List(args)));
 });
 
 test('should collect remaining arguments in the inner-most destructuring form', (assert) => {
@@ -131,7 +128,7 @@ test('should collect remaining arguments in the inner-most destructuring form', 
     ((fn [a & [b & [c & [d & [e & rest]]]]] rest) ${args.join(' ')})
   `);
 
-  assert.truthy(I.is(result, R.map(bignumber, I.Seq.of(6, 7, 8, 9, 10))));
+  assert.truthy(I.is(result, I.Seq.of(6, 7, 8, 9, 10)));
 });
 
 test('should default rest to an empty Seq if there are no extra arguments', (assert) => {
@@ -155,7 +152,7 @@ test('should default elements to undefined if they cannot be destructured', (ass
     ((fn [a & [b & rest]] [a b rest]) 1)
   `);
 
-  const expected = I.List.of(bignumber(1), undefined, I.Seq());
+  const expected = I.List.of(1, undefined, I.Seq());
   assert.truthy(I.is(result, expected));
 });
 

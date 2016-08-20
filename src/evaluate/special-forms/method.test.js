@@ -1,10 +1,7 @@
 import test from 'ava';
 import * as td from 'testdouble';
 import * as I from 'immutable';
-import * as M from 'mathjs';
 import { parse, evaluate } from '../../index';
-
-const bignumber = (x) => M.bignumber(x);
 
 test('should execute method calls with 0 arguments', (assert) => {
   const symbol = 'test';
@@ -35,7 +32,7 @@ test('should execute method calls on Set instances', (assert) => {
     (.add #{1 2 3 4} 5)
   `);
 
-  assert.truthy(I.is(result, I.Set.of(1, 2, 3, 4, 5).map(bignumber)));
+  assert.truthy(I.is(result, I.Set.of(1, 2, 3, 4, 5)));
 });
 
 test('should execute method calls on Map instances', (assert) => {
@@ -43,7 +40,7 @@ test('should execute method calls on Map instances', (assert) => {
     (.getIn {1 2, 3 {1 3}} [3 1])
   `);
 
-  assert.truthy(M.equal(result, 3));
+  assert.is(result, 3);
 });
 
 test('should execute method calls on Stack instances', (assert) => {
@@ -51,7 +48,7 @@ test('should execute method calls on Stack instances', (assert) => {
     (.peek (quote (1 2 3)))
   `);
 
-  assert.truthy(M.equal(result, 1));
+  assert.is(result, 1);
 });
 
 test('should execute method calls on List instances', (assert) => {

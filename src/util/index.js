@@ -1,14 +1,27 @@
 import * as R from 'ramda';
 import * as I from 'immutable';
+import * as M from 'mathjs';
 import * as iterall from 'iterall';
 
-export function isNumber(x) {
-  return ! Number.isNaN(parseFloat(x)) && ! Number.isNaN(Number(x));
+export function isNumberString(string) {
+  return ! Number.isNaN(parseFloat(string)) && ! Number.isNaN(Number(string));
 }
 
-export function isFraction(x) {
+export function isBignumberString(string) {
+  return string.endsWith('M') && isNumberString(string.slice(0, -1));
+}
+
+export function createBignumber(string) {
+  return M.bignumber(string.replace(/M$/, ''));
+}
+
+export function stripQuotes(string) {
+  return string.replace(/(^"|"$)/g, '');
+}
+
+export function isFractionString(x) {
   const [numerator, denominator, ...rest] = String(x).split('/');
-  return rest.length === 0 && isNumber(numerator) && isNumber(denominator);
+  return rest.length === 0 && isNumberString(numerator) && isNumberString(denominator);
 }
 
 export function getMatchingStartingParens(x) {
@@ -173,4 +186,24 @@ export function getMethodName(symbol) {
 
 export function getGlobalRefName(symbol) {
   return getSymbolName(symbol).replace(/^js\//, '');
+}
+
+export function is(one, two) {
+  if ([one, two].every(isGLISPNumber)) {
+    return M.equal(one, two);
+  }
+
+  return I.is(one, two);
+}
+
+function isGLISPNumber(x) {
+  if (R.is(Number, x)) {
+    return true;
+  }
+
+  if (x) {
+    return ['Fraction', 'BigNumber'].includes(x.type);
+  }
+
+  return false;
 }

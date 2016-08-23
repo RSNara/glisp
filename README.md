@@ -1,5 +1,7 @@
 # GLISP - The G LISP Interpreter
 
+[![Build Status](https://travis-ci.org/rsnara/glisp.svg?branch=master)](https://travis-ci.org/rsnara/glisp)
+
 This is a LISP interpreter, with built-in support for arbitrary precision arithmetic, and immutable data structures.
 
 ## Usage

@@ -13,7 +13,7 @@ test('should enable the implementation of defn', (assert) => {
     (do
       (def defn
         (macro [name arg-names & body]
-          (Stack (quote def) name (concat (Stack (quote fn) arg-names) body))))
+          (Stack 'def name (concat (Stack 'fn arg-names) body))))
       (defn add [x y] 1 (+ x y))
       (defn identity [x] x))
   `);

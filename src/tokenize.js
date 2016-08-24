@@ -27,6 +27,18 @@ function buildTokens([tokens, buffer], token) {
     return [ tokens, buffer + token ];
   }
 
+  if (token === '~') {
+    return [ tokens.push(buffer), token ];
+  }
+
+  if (buffer === '~') {
+    if (token === '@') {
+      return [ tokens.push('~@'), '' ];
+    }
+
+    return [ tokens.push('~'), token ];
+  }
+
   if (token === '#') {
     return [ tokens.push(buffer), token ];
   }
@@ -35,7 +47,7 @@ function buildTokens([tokens, buffer], token) {
     return [ tokens.push('#{'), '' ];
   }
 
-  if (['{', '}', '[', ']', '(', ')'].includes(token)) {
+  if (['{', '}', '[', ']', '(', ')', '\'', '`'].includes(token)) {
     return [ tokens.push(buffer, token), '' ];
   }
 

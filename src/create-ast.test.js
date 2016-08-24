@@ -162,3 +162,114 @@ test('should throw if a map literal has an odd number of args', (assert) => {
   const tokens = ['{', ...elements, '}'];
   assert.throws(() => createAst(tokens));
 });
+
+['\'', '`'].forEach((token) => {
+  test(`should quote Stacks prefixed with ${token}`, (assert) => {
+    const elements = [token, '(', '1', '2', '3', ')'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Stack.of('1', '2', '3' )),
+    ));
+  });
+
+  test(`should quote Lists prefixed with ${token}`, (assert) => {
+    const elements = [token, '[', '(', '2', ')', '3', ']'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.List.of(I.Stack.of('2'), '3')),
+    ));
+  });
+
+  test(`should quote Sets prefixed with ${token}`, (assert) => {
+    const elements = [token, '#{', '[', '2', ']', '3', '}'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Set.of(I.List.of('2'), '3')),
+    ));
+  });
+
+  test(`should quote Maps prefixed with ${token}`, (assert) => {
+    const elements = [token, '{', '[', '2', ']', '3', '}'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Map.of(I.List.of('2'), '3')),
+    ));
+  });
+
+  test(`should quote symbols prefixed with ${token}`, (assert) => {
+    const elements = [token, '#{', '[', '\'', 'horse', ']', '3', '}'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Set.of(I.List.of(I.Stack.of('quote', 'horse')), '3')),
+    ));
+  });
+
+  test(`should quote numbers prefixed with ${token}`, (assert) => {
+    const elements = [token, '#{', '[', '\'', '1', ']', '3', '}'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Set.of(I.List.of(I.Stack.of('quote', '1')), '3')),
+    ));
+  });
+
+  test(`should quote Stacks prefixed with ${token}`, (assert) => {
+    const elements = [token, '(', '1', '2', '3', ')'];
+    const ast = createAst(elements);
+    assert.true(I.is(
+      ast,
+      I.Stack.of('quote', I.Stack.of('1', '2', '3' )),
+    ));
+  });
+
+  test(`should throw an error when no forms follow ${token}`, (assert) => {
+    const elements = [token];
+    assert.throws(() => createAst(elements));
+  });
+});
+
+test('should unquote numbers prefixed with ~', (assert) => {
+  const elements = ['~', '1'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('unquote', '1')));
+});
+
+test('should unquote Sets prefixed with ~', (assert) => {
+  const elements = ['~', '#{', '1', '}'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('unquote', I.Set.of('1'))));
+});
+
+test('should unquote Lists prefixed with ~', (assert) => {
+  const elements = ['~', '[', '1', ']'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('unquote', I.List.of('1'))));
+});
+
+test('should unquote Stacks prefixed with ~', (assert) => {
+  const elements = ['~', '(', '1', ')'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('unquote', I.Stack.of('1'))));
+});
+
+test('should unquote Maps prefixed with ~', (assert) => {
+  const elements = ['~', '{', '1', '[', ']', '}'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('unquote', I.Map.of('1', I.List()))));
+});
+
+test('should throw an error when no forms follow ~', (assert) => {
+  const elements = ['~'];
+  assert.throws(() => createAst(elements));
+});
+
+test('should parse quote within unquote within a quote', (assert) => {
+  const elements = ['`', '~', '\'', '1'];
+  const ast = createAst(elements);
+  assert.true(I.is(ast, I.Stack.of('quote', I.Stack.of('unquote', I.Stack.of('quote', '1')))));
+});

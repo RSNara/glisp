@@ -29,23 +29,6 @@ export default function createAst(tokens) {
       return [ buildMap(I.Map(), i, end, i + 1), end + 1 ];
     }
 
-    // TODO: Re-implement so reader macros aren't inlined
-    if (['\'', '`', '~'].includes(token)) {
-      if (i + 1 === tokens.length) {
-        throw new Error(`${token} must be followed by a form, found none.`);
-      }
-    }
-
-    if (token === '\'' || token === '`') {
-      const [ form, next ] = build(i + 1);
-      return [ I.Stack.of( createAtom('quote'), form ), next ];
-    }
-
-    if (token === '~') {
-      const [ form, next ] = build(i + 1);
-      return [ I.Stack.of( createAtom('unquote'), form ), next ];
-    }
-
     return [ createAtom(token), i + 1 ];
   }
 

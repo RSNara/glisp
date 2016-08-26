@@ -40,7 +40,8 @@ run('(+ 1 2)') // 3
 
 ;; macros
 (def defn (macro [name args body]
-            `(def ~name (fn ~args ~body)))))
+            (quote
+              (def (unquote name) (fn (unquote args) (unquote body))))))
 
 (defn double [x] (* x 2))
 (double 2)  ;; 4

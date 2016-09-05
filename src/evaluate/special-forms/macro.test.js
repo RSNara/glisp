@@ -5,7 +5,7 @@ import { parse, evaluate, RootEnv } from '../../index';
 
 const symbol = (x) => Symbol.for(x);
 
-test('should enable the implementation of defn', (assert) => {
+test('should enable the implementation of defn', (t) => {
   const env = Util.create(RootEnv, {
     [Symbol.for('concat')]: (coll, x) => coll.concat(x),
   });
@@ -22,11 +22,11 @@ test('should enable the implementation of defn', (assert) => {
   const identity = env[symbol('identity')];
   const add = env[symbol('add')];
 
-  assert.is(identity(uniqueObject), uniqueObject);
-  assert.is(add(1, 2), 3);
+  t.is(identity(uniqueObject), uniqueObject);
+  t.is(add(1, 2), 3);
 });
 
-test('should enable the implementation of apply', (assert) => {
+test('should enable the implementation of apply', (t) => {
   const env = Util.create(RootEnv, {
     [Symbol.for('concat')]: (coll, el) => coll.concat(el),
   });
@@ -38,10 +38,10 @@ test('should enable the implementation of apply', (assert) => {
       (apply < [1 2 3 4 5 6]))
   `);
 
-  assert.truthy(result);
+  t.truthy(result);
 });
 
-test('should enable the implementation of ->', (assert) => {
+test('should enable the implementation of ->', (t) => {
   const env = Util.create(RootEnv, {
     [Symbol.for('reduce')]: Util.reduce,
     [Symbol.for('concat')]: (collection, item) => collection.concat(item),
@@ -62,7 +62,7 @@ test('should enable the implementation of ->', (assert) => {
       (-> 1 (* 2) inc (* 2) (- 1)))
   `);
 
-  assert.truthy(M.equal(result, 5));
+  t.truthy(M.equal(result, 5));
 });
 
 function run(env, code) {

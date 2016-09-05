@@ -5,72 +5,72 @@ import * as I from 'immutable';
 const createAtom = td.replace('./create-atom', x => x);
 const createAst = require('./create-ast').default;
 
-test('should build a Stack when it encounters ()', (assert) => {
+test('should build a Stack when it encounters ()', (t) => {
   const tokens = ['(', ')'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Stack()));
+  t.truthy(I.is(ast, I.Stack()));
 });
 
-test('should build a List when it encounters []', (assert) => {
+test('should build a List when it encounters []', (t) => {
   const tokens = ['[', ']'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.List()));
+  t.truthy(I.is(ast, I.List()));
 });
 
-test('should build a Set when it encounters #{}', (assert) => {
+test('should build a Set when it encounters #{}', (t) => {
   const tokens = ['#{', '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Set()));
+  t.truthy(I.is(ast, I.Set()));
 });
 
-test('should build a Map when it encounters {}', (assert) => {
+test('should build a Map when it encounters {}', (t) => {
   const tokens = ['{', '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Map()));
+  t.truthy(I.is(ast, I.Map()));
 });
 
-test('should return an atom if it encounters a non collection literal', (assert) => {
+test('should return an atom if it encounters a non collection literal', (t) => {
   const tokens = ['a'];
   const ast = createAst(tokens);
-  assert.is(ast, createAtom('a'));
+  t.is(ast, createAtom('a'));
 });
 
-test('should build a Stack inside a Stack when it encounters (())', (assert) => {
+test('should build a Stack inside a Stack when it encounters (())', (t) => {
   const tokens = ['(', '(', ')', ')'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Stack.of(I.Stack())));
+  t.truthy(I.is(ast, I.Stack.of(I.Stack())));
 });
 
-test('should build a List inside a List when it encounters [[]]', (assert) => {
+test('should build a List inside a List when it encounters [[]]', (t) => {
   const tokens = ['[', '[', ']', ']'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.List.of(I.List())));
+  t.truthy(I.is(ast, I.List.of(I.List())));
 });
 
-test('should build a Set inside a Set when it encounters #{#{}}', (assert) => {
+test('should build a Set inside a Set when it encounters #{#{}}', (t) => {
   const tokens = ['#{', '#{', '}', '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Set.of(I.Set())));
+  t.truthy(I.is(ast, I.Set.of(I.Set())));
 });
 
-test('should build a Map inside a Map when it encounters {{} {}}', (assert) => {
+test('should build a Map inside a Map when it encounters {{} {}}', (t) => {
   const tokens = ['{', '{', '}', '{', '}', '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Map.of(I.Map(), I.Map())));
+  t.truthy(I.is(ast, I.Map.of(I.Map(), I.Map())));
 });
 
-test('should build a Stack with the element order specified in the literal', (assert) => {
+test('should build a Stack with the element order specified in the literal', (t) => {
   const args = ['1', '2', '3', '4'];
   const tokens = ['(', ...args, ')'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(ast, I.Stack(args.map(createAtom))));
+  t.truthy(I.is(ast, I.Stack(args.map(createAtom))));
 });
 
-test('should be able to build a Set with items and collections', (assert) => {
+test('should be able to build a Set with items and collections', (t) => {
   const elements = ['1', '{', '}', '2', '3', '#{', '}', '(', ')', '5', '[', '[', '2', ']', ']'];
   const tokens = ['#{', ...elements, '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(
+  t.truthy(I.is(
     ast,
     I.Set.of(
       createAtom('1'),
@@ -85,11 +85,11 @@ test('should be able to build a Set with items and collections', (assert) => {
   ));
 });
 
-test('should be able to build a Stack with items and collections', (assert) => {
+test('should be able to build a Stack with items and collections', (t) => {
   const elements = ['1', '{', 'a', 'b', '}', '2', '3', '#{', '}', '(', ')', '5', '[', ']'];
   const tokens = ['(', ...elements, ')'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(
+  t.truthy(I.is(
     ast,
     I.Stack.of(
       createAtom('1'),
@@ -104,11 +104,11 @@ test('should be able to build a Stack with items and collections', (assert) => {
   ));
 });
 
-test('should be able to build a List with items and collections', (assert) => {
+test('should be able to build a List with items and collections', (t) => {
   const elements = ['1', '{', '}', '2', '3', '#{', '}', '(', '3', ')', '5', '[', ']'];
   const tokens = ['[', ...elements, ']'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(
+  t.truthy(I.is(
     ast,
     I.List.of(
       createAtom('1'),
@@ -123,11 +123,11 @@ test('should be able to build a List with items and collections', (assert) => {
   ));
 });
 
-test('should be able to build a List with items and collections', (assert) => {
+test('should be able to build a List with items and collections', (t) => {
   const elements = ['1', '{', '}', '2', '3', '#{', '2', '}', '(', ')', '5', '[', ']'];
   const tokens = ['{', ...elements, '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(
+  t.truthy(I.is(
     ast,
     I.Map.of(
       createAtom('1'),
@@ -142,11 +142,11 @@ test('should be able to build a List with items and collections', (assert) => {
   ));
 });
 
-test('should build a complex tree from a complex literal', (assert) => {
+test('should build a complex tree from a complex literal', (t) => {
   const elements = ['#{', '2', '}', '5', '[', 'ten', ']', '(', '(', '#{', '4', '}', ')', ')'];
   const tokens = ['{', ...elements, '}'];
   const ast = createAst(tokens);
-  assert.truthy(I.is(
+  t.truthy(I.is(
     ast,
     I.Map.of(
       I.Set.of(createAtom('2')),
@@ -157,8 +157,8 @@ test('should build a complex tree from a complex literal', (assert) => {
   ));
 });
 
-test('should throw if a map literal has an odd number of args', (assert) => {
+test('should throw if a map literal has an odd number of args', (t) => {
   const elements = ['1', '3', '#{', '}'];
   const tokens = ['{', ...elements, '}'];
-  assert.throws(() => createAst(tokens));
+  t.throws(() => createAst(tokens));
 });

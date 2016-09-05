@@ -1,29 +1,29 @@
 import test from 'ava';
 import * as GLISP from '../../index';
 
-test('should throw an error if throw is called with no arguments', (assert) => {
+test('should throw an error if throw is called with no arguments', (t) => {
   const shouldDie = () => run({}, '(throw)');
-  const error = assert.throws(shouldDie);
+  const error = t.throws(shouldDie);
 
   [/exactly/i, /one/i, /arg/i].forEach((regex) => {
-    assert.regex(error.message, regex);
+    t.regex(error.message, regex);
   });
 });
 
-test('should throw an error if throw is called with a non-error', (assert) => {
+test('should throw an error if throw is called with a non-error', (t) => {
   const shouldDie = () => run({}, '(throw 1)');
-  const error = assert.throws(shouldDie);
+  const error = t.throws(shouldDie);
 
   [/throw/i, /object/i, /expect/i, /error/i, /instance/i].forEach((regex) => {
-    assert.regex(error.message, regex);
+    t.regex(error.message, regex);
   });
 });
 
-test('should throw the passed in error', (assert) => {
+test('should throw the passed in error', (t) => {
   const shouldDie = () => run({}, '(throw (js/Error "One two three!"))');
-  const error = assert.throws(shouldDie);
+  const error = t.throws(shouldDie);
 
-  assert.is(error.message, 'One two three!');
+  t.is(error.message, 'One two three!');
 });
 
 function run(env, code) {

@@ -224,19 +224,3 @@ test('should tokenize List literals beside regular symbols', (t) => {
   `);
   t.deepEqual(tokens, ['(', 'defn', 'id', '[', 'x', ']', 'x', ')']);
 });
-
-['#{', '{', '}', '[', ']', '(', ')', '\'', '`', '~', '~@'].forEach((token) => {
-  test(`should tokenize ${token} beside forms`, (t) => {
-    const tokens = tokenize(`
-      ${token}horse
-    `);
-    t.deepEqual(tokens, [token, 'horse']);
-  });
-
-  test('should tokenize ${token} between forms', (t) => {
-    const tokens = tokenize(`
-      cow${token}horse
-    `);
-    t.deepEqual(tokens, ['cow', token, 'horse']);
-  });
-});

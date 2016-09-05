@@ -7,13 +7,13 @@
   "license": "ISC",
   "scripts": {
     "clean": "rimraf lib",
+    "commit": "git cz",
     "prebuild": "npm run clean",
     "build": "rollup -c",
     "build:watch": "npm run build -- --watch",
-    "serve:dev": "http-server -p 8080 .",
     "prepublish": "npm run build",
-    "commit": "git cz",
     "repl": "node repl",
+    "serve:dev": "http-server -p 8080 .",
     "prerelease": "npm test",
     "release": "standard-version",
     "postrelease": "git push --follow-tags && npm publish",
@@ -28,6 +28,11 @@
     "G",
     "LISP",
     "Interpreter"
+  ],
+  "files": [
+    "lib",
+    "index.html",
+    "repl.js"
   ],
   "ava": {
     "babel": "inherit",

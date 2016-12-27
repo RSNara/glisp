@@ -254,8 +254,6 @@ test('should tokenize \'\\\'', (t) => {
     "I'm a horse\\\\n, duh."
   `);
 
-  console.log(tokens[0], ['"I\'m a horse\\n, duh."'][0]);
-
   t.deepEqual(tokens, ['"I\'m a horse\\n, duh."']);
 });
 

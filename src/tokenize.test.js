@@ -58,7 +58,7 @@ test('should tokenize a mixture of maps, sets, and lists', (t) => {
 
 test('should tokenize \'#\' when beside \'(\'', (t) => {
   const tokens = tokenize('#(');
-  t.deepEqual(tokens, ['#', '(']);
+  t.deepEqual(tokens, ['#(']);
 });
 
 test('should treat \',\' as whitepsaces', (t) => {
@@ -223,4 +223,54 @@ test('should tokenize List literals beside regular symbols', (t) => {
     (defn id[x]x)
   `);
   t.deepEqual(tokens, ['(', 'defn', 'id', '[', 'x', ']', 'x', ')']);
+});
+
+test('should tokenize \'\\t\'', (t) => {
+  const tokens = tokenize(`
+    "I'm a horse\\t, duh."
+  `);
+
+  t.deepEqual(tokens, ['"I\'m a horse\t, duh."']);
+});
+
+test('should tokenize \'\\r\'', (t) => {
+  const tokens = tokenize(`
+    "I'm a horse\\r, duh."
+  `);
+
+  t.deepEqual(tokens, ['"I\'m a horse\r, duh."']);
+});
+
+test('should tokenize \'\\n\'', (t) => {
+  const tokens = tokenize(`
+    "I'm a horse\\n, duh."
+  `);
+
+  t.deepEqual(tokens, ['"I\'m a horse\n, duh."']);
+});
+
+test('should tokenize \'\\\'', (t) => {
+  const tokens = tokenize(`
+    "I'm a horse\\\\n, duh."
+  `);
+
+  console.log(tokens[0], ['"I\'m a horse\\n, duh."'][0]);
+
+  t.deepEqual(tokens, ['"I\'m a horse\\n, duh."']);
+});
+
+test('should tokenize \'\\\\\\\\', (t) => {
+  const tokens = tokenize(`
+    "I'm a horse\\\\\\\\, duh."
+  `);
+
+  t.deepEqual(tokens, ['"I\'m a horse\\\\, duh."']);
+});
+
+test('should tokenize \'\\"\'', (t) => {
+  const tokens = tokenize(`
+    "I'm a \\"horse\\", duh."
+  `);
+
+  t.deepEqual(tokens, ['"I\'m a "horse", duh."']);
 });

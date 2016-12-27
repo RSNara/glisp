@@ -190,7 +190,7 @@ export function getGlobalRefName(symbol) {
 
 export function is(one, two) {
   if ([one, two].every(isGLISPNumber)) {
-    return M.equal(one, two);
+    return M.equal(M.bignumber(one), M.bignumber(two));
   }
 
   return I.is(one, two);

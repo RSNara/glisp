@@ -124,9 +124,11 @@ GLISP supports JavaScript's 64 bit floating point numbers, [BigNumber](https://g
 ;; Compare different number types!
 (= 1/1 1 1M) ;; true
 
-;; Beware of floating point errors!
-(= (+ 0.1 0.2) 0.3M) ;; throws: Cannot convert a number with >15 significant digits to BigNumber!
-(= (+ 0.1 0.2) 3/10) ;; throws: Cannot convert a number with >15 significant digits to Fraction!
+;; Compare floating points with BigNumbers!
+(= (+ 0.1 0.2) 0.3M) ;; true
+
+;; Compare floating points with Fractions!
+(= (+ 0.1 0.2) 3/10) ;; true
 ```
 
 ### Strings

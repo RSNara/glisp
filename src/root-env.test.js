@@ -100,12 +100,12 @@ test('= should return false when any GLISP number is not the same', (t) => {
   t.false(run(GLISP.RootEnv, '(= 1/2 0.5M 0.5 (+ 0.25 0.2))'));
 });
 
-test('= should throw on Floating Point errors when comparing Numbers with BigNumbers', (t) => {
-  t.throws(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 0.3M)'));
+test('= should not throw on Floating Point errors when comparing Numbers with BigNumbers', (t) => {
+  t.notThrows(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 0.3M)'));
 });
 
-test('= should throw on Floating Point errors when comparing Numbers with Fractions', (t) => {
-  t.throws(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 3/10)'));
+test('= should not throw on Floating Point errors when comparing Numbers with Fractions', (t) => {
+  t.notThrows(() => run(GLISP.RootEnv, '(= (+ 0.1 0.2) 3/10)'));
 });
 
 function run(env, code) {
